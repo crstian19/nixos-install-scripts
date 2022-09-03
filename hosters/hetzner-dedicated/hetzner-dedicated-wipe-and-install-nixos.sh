@@ -179,7 +179,7 @@ RESCUE_INTERFACE=$(ip route get 8.8.8.8 | grep -Po '(?<=dev )(\S+)')
 # See https://major.io/2015/08/21/understanding-systemds-predictable-network-device-names/#comment-545626
 # NICs for most Hetzner servers are not onboard, which is why we use
 # `ID_NET_NAME_PATH`otherwise it would be `ID_NET_NAME_ONBOARD`.
-INTERFACE_DEVICE_PATH=$(udevadm info -e | grep -Po "(?<=^P: )(.*${RESCUE_INTERFACE})")
+INTERFACE_DEVICE_PATH=$(udevadm info -e | grep -Po "(?<=^P: )(.*${RESCUE_INTERFACE})" | head -1)
 UDEVADM_PROPERTIES_FOR_INTERFACE=$(udevadm info --query=property "--path=$INTERFACE_DEVICE_PATH")
 NIXOS_INTERFACE=$(echo "$UDEVADM_PROPERTIES_FOR_INTERFACE" | grep -o -E 'ID_NET_NAME_PATH=\w+' | cut -d= -f2)
 echo "Determined NIXOS_INTERFACE as '$NIXOS_INTERFACE'"
